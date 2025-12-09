@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1028897163578",
+    "project_id": "highwayhelp-d6d23",
+    "storage_bucket": "highwayhelp-d6d23.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028897163578:android:671e55acae0730db196803",
+        "android_client_info": {
+          "package_name": "com.infowave.highwayhelp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS9Q0qJhw_0quAd3Dln7utbGIZIgQ0PM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

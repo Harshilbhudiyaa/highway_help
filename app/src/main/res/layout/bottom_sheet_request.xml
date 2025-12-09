@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_top_wave"
+    android:backgroundTint="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Handle Bar -->
+    <View
+        android:layout_width="60dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center"
+        android:background="#E0E0E0"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Request Assistance"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#1A1A1A"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarSheet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <!-- STEP 1: VEHICLE GRID -->
+    <LinearLayout
+        android:id="@+id/layoutStep1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Vehicle Type"
+            android:textColor="#757575"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <GridLayout
+            android:id="@+id/gridVehicles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:alignmentMode="alignMargins"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+
+    <!-- STEP 2: SERVICES + PHOTO -->
+    <LinearLayout
+        android:id="@+id/layoutStep2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!-- Back Button Area -->
+        <LinearLayout
+            android:id="@+id/btnChangeVehicle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/tvSelectedVehicle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Selected: Car"
+                android:textStyle="bold"
+                android:textColor="#0056D2"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CHANGE"
+                android:textStyle="bold"
+                android:textColor="#999"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What's the issue?"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"/>
+
+        <GridLayout
+            android:id="@+id/gridIssues"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:alignmentMode="alignMargins"/>
+
+        <!-- ADD PHOTO SECTION -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Photo (Optional)"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnAddPhoto"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:cardCornerRadius="8dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#999"
+                app:cardElevation="0dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@android:drawable/ic_menu_camera"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvPhotoStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No image selected"
+                android:layout_marginStart="10dp"
+                android:textColor="#666"/>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSearchMechanic"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="FIND MECHANIC"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="30dp"
+            android:backgroundTint="#0056D2"/>
+    </LinearLayout>
+</LinearLayout>

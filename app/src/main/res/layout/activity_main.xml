@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 1. Map (Background) -->
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 2. Top Location Bar (Left Side) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_toStartOf="@+id/btnHistory"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="8dp"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="📍 Detecting Location..."
+            android:textColor="#333"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- 3. HISTORY BUTTON (NEW - Top Right) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/btnHistory"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_recent_history"
+            android:layout_gravity="center"
+            app:tint="#0056D2"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- 4. RADAR ANIMATION LAYER (Hidden by default) -->
+    <RelativeLayout
+        android:id="@+id/layoutRadar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:elevation="10dp">
+
+        <!-- Semi-transparent overlay -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#40000000"/>
+
+        <!-- Pulse Circles -->
+        <ImageView
+            android:id="@+id/pulse1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/bg_circle"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            android:id="@+id/pulse2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/bg_circle"
+            android:layout_centerInParent="true"/>
+
+        <!-- User Pin in Center -->
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:tint="#0056D2"
+            android:layout_centerInParent="true"/>
+
+        <!-- Status Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contacting Nearby Mechanics..."
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="80dp"/>
+
+        <!-- Cancel Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancelSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL REQUEST"
+            android:backgroundTint="#FF3D00"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp"/>
+    </RelativeLayout>
+
+    <!-- 5. Bottom Request Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRequestMechanic"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="24dp"
+        android:text="REQUEST HELP"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        android:backgroundTint="#0056D2"
+        app:elevation="10dp"/>
+
+</RelativeLayout>

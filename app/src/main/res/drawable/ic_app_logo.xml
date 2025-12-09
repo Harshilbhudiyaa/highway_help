@@ -1,0 +1,27 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="512dp"
+    android:height="512dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Blue Outer Shield/Circle -->
+    <path
+        android:fillColor="#0056D2"
+        android:pathData="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,20 C7.58,20 4,16.42 4,12 C4,7.58 7.58,4 12,4 C16.42,4 20,7.58 20,12 C20,16.42 16.42,20 12,20 Z"/>
+
+    <!-- Orange Highway Road -->
+    <path
+        android:fillColor="#FF9F00"
+        android:pathData="M7,18 L17,18 L16,15 L8,15 L7,18 Z M12,16 L12,17.5 M9.5,16 L10,17.5 M14.5,16 L14,17.5"/>
+
+    <!-- Blue Location Pin (Upper Part) -->
+    <path
+        android:fillColor="#0056D2"
+        android:pathData="M12,5 C10.34,5 9,6.34 9,8 C9,10.5 12,14 12,14 C12,14 15,10.5 15,8 C15,6.34 13.66,5 12,5 Z"/>
+
+    <!-- White Wrench & Gear (Inside Pin) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,6.5 C11.17,6.5 10.5,7.17 10.5,8 C10.5,8.83 11.17,9.5 12,9.5 C12.83,9.5 13.5,8.83 13.5,8 C13.5,7.17 12.83,6.5 12,6.5 Z M13.2,10.8 C12.9,10.9 12.5,11 12,11 C11.5,11 11.1,10.9 10.8,10.8 L10,12.2 L11.5,13 L12.5,13 L14,12.2 L13.2,10.8 Z M12,7.2 C12.44,7.2 12.8,7.56 12.8,8 C12.8,8.44 12.44,8.8 12,8.8 C11.56,8.8 11.2,8.44 11.2,8 C11.2,7.56 11.56,7.2 12,7.2 Z"/>
+
+</vector>
