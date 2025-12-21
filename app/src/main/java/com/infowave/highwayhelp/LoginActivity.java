@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -26,11 +27,15 @@ public class LoginActivity extends AppCompatActivity {
 
     TextInputEditText etPhone;
     MaterialButton btnLogin;
-    TextView tvGoToRegister;
+    TextView tvGoToRegister, tvMobileLabel, tvWelcome, tvSubtitle, tvNewUser;
     ProgressBar progressBar;
     ApiInterface apiInterface;
     SessionManager sessionManager;
     String fcmToken = ""; // Token yahan aayega
+
+    // For dynamic translation
+    com.google.android.material.textfield.TextInputLayout tilPhone;
+    String currentLanguageCode = "en";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +48,16 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
+        // Initialize views
         etPhone = findViewById(R.id.etPhone);
         btnLogin = findViewById(R.id.btnLogin);
         tvGoToRegister = findViewById(R.id.tvGoToRegister);
+        tvMobileLabel = findViewById(R.id.tvMobileLabel);
+        tvWelcome = findViewById(R.id.tvWelcome);
+        tvSubtitle = findViewById(R.id.tvSubtitle);
+        tvNewUser = findViewById(R.id.tvNewUser);
         progressBar = findViewById(R.id.progressBar);
+        tilPhone = findViewById(R.id.tilPhone);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -64,6 +75,10 @@ public class LoginActivity extends AppCompatActivity {
                         // Log.d("FCM", "User Token: " + fcmToken);
                     }
                 });
+
+        // Load saved language and translate form automatically
+        currentLanguageCode = sessionManager.getLanguage();
+        translateForm(currentLanguageCode);
 
         tvGoToRegister.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
@@ -84,7 +99,24 @@ public class LoginActivity extends AppCompatActivity {
                     });
                 }
             } else {
-                etPhone.setError("Enter 10 digit number");
+                // Translate error message
+                String errorMsg = "Enter 10 digit number";
+                if (!currentLanguageCode.equals("en")) {
+                    TranslationHelper.translateText(errorMsg, currentLanguageCode,
+                            new TranslationHelper.TranslationCallback() {
+                                @Override
+                                public void onTranslationComplete(String translatedText) {
+                                    etPhone.setError(translatedText);
+                                }
+
+                                @Override
+                                public void onTranslationError(String error) {
+                                    etPhone.setError(errorMsg);
+                                }
+                            });
+                } else {
+                    etPhone.setError(errorMsg);
+                }
             }
         });
     }
@@ -108,7 +140,8 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.body().get("success").getAsBoolean()) {
                         showOtpBottomSheet(phone);
                     } else {
-                        Toast.makeText(LoginActivity.this, "Error: " + response.body().get("message").getAsString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, "Error: " + response.body().get("message").getAsString(),
+                                Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -138,6 +171,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 tvTimer.setText("Resend code in 00:" + millisUntilFinished / 1000);
             }
+
             public void onFinish() {
                 tvTimer.setText("Didn't receive code?");
                 tvResendBtn.setVisibility(android.view.View.VISIBLE);
@@ -152,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
 
         btnVerifyOtp.setOnClickListener(v -> {
             String otp = etOtpInput.getText().toString().trim();
-            if(otp.length() >= 4) {
+            if (otp.length() >= 4) {
                 verifyOtp(phone, otp, bottomSheetDialog, progressOtp);
             } else {
                 Toast.makeText(this, "Enter Valid OTP", Toast.LENGTH_SHORT).show();
@@ -178,7 +212,8 @@ public class LoginActivity extends AppCompatActivity {
                             if (response.body().has("user_id")) {
                                 userId = response.body().get("user_id").getAsString();
                             }
-                        } catch (Exception e) {}
+                        } catch (Exception e) {
+                        }
 
                         sessionManager.createLoginSession(userId, phone);
 
@@ -190,6 +225,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 loader.setVisibility(android.view.View.GONE);
@@ -201,5 +237,54 @@ public class LoginActivity extends AppCompatActivity {
     private void goToMain() {
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finishAffinity();
+    }
+
+    /**
+     * Translate all form elements to the selected language
+     */
+    private void translateForm(String targetLang) {
+        // If English, set original text
+        if (targetLang.equals("en")) {
+            tvWelcome.setText("Welcome Back");
+            tvSubtitle.setText("Login to continue");
+            tvMobileLabel.setText("Mobile Number");
+            tilPhone.setHint("98765 43210");
+            btnLogin.setText("Secure Login");
+            tvNewUser.setText("New User? ");
+            tvGoToRegister.setText("Create Account");
+            return;
+        }
+
+        // Texts to translate
+        String[] textsToTranslate = {
+                "Welcome Back",
+                "Login to continue",
+                "Mobile Number",
+                "98765 43210",
+                "Secure Login",
+                "New User? ",
+                "Create Account"
+        };
+
+        // Translate all at once
+        TranslationHelper.translateMultiple(textsToTranslate, targetLang,
+                new TranslationHelper.MultiTranslationCallback() {
+                    @Override
+                    public void onTranslationComplete(String[] translatedTexts) {
+                        // Update UI with translated text
+                        tvWelcome.setText(translatedTexts[0]);
+                        tvSubtitle.setText(translatedTexts[1]);
+                        tvMobileLabel.setText(translatedTexts[2]);
+                        tilPhone.setHint(translatedTexts[3]);
+                        btnLogin.setText(translatedTexts[4]);
+                        tvNewUser.setText(translatedTexts[5]);
+                        tvGoToRegister.setText(translatedTexts[6]);
+                    }
+
+                    @Override
+                    public void onTranslationError(String error) {
+                        Toast.makeText(LoginActivity.this, "Translation error: " + error, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

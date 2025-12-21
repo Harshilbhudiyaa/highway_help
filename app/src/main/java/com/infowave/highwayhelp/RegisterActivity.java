@@ -27,11 +27,15 @@ public class RegisterActivity extends AppCompatActivity {
     EditText etName, etPhone, etState, etCity;
     Spinner spinnerLanguage;
     Button btnRegister;
-    TextView tvGoToLogin;
+    TextView tvGoToLogin, tvLanguageLabel, tvCreateAccount;
     ProgressBar progressBar;
     ApiInterface apiInterface;
     SessionManager sessionManager;
     String fcmToken = ""; // Token variable
+
+    // For dynamic translation
+    com.google.android.material.textfield.TextInputLayout tilName, tilPhone, tilState, tilCity;
+    String currentLanguageCode = "en";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,8 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         sessionManager = new SessionManager(this);
+
+        // Initialize EditTexts
         etName = findViewById(R.id.etName);
         etPhone = findViewById(R.id.etPhone);
         etState = findViewById(R.id.etState);
@@ -47,7 +53,15 @@ public class RegisterActivity extends AppCompatActivity {
 
         btnRegister = findViewById(R.id.btnRegister);
         tvGoToLogin = findViewById(R.id.tvGoToLogin);
+        tvLanguageLabel = findViewById(R.id.tvLanguageLabel);
+        tvCreateAccount = findViewById(R.id.tvCreateAccount);
         progressBar = findViewById(R.id.progressBar);
+
+        // Initialize TextInputLayouts for translation
+        tilName = findViewById(R.id.tilName);
+        tilPhone = findViewById(R.id.tilPhone);
+        tilState = findViewById(R.id.tilState);
+        tilCity = findViewById(R.id.tilCity);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -63,9 +77,49 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
 
-        String[] languages = {"English", "Hindi", "Gujarati"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, languages);
+        String[] languages = { "English", "Hindi", "Gujarati" };
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                languages);
         spinnerLanguage.setAdapter(adapter);
+
+        // Load saved language preference and set spinner
+        String savedLanguage = sessionManager.getLanguage();
+        currentLanguageCode = savedLanguage;
+        int savedPosition = 0; // Default to English
+        if (savedLanguage.equals("hi")) {
+            savedPosition = 1; // Hindi
+        } else if (savedLanguage.equals("gu")) {
+            savedPosition = 2; // Gujarati
+        }
+        spinnerLanguage.setSelection(savedPosition, false); // false = don't trigger listener yet
+
+        // Language change listener - Translate form when language changes
+        spinnerLanguage.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                String selectedLang = languages[position];
+
+                // Set language code
+                if (selectedLang.equals("Hindi")) {
+                    currentLanguageCode = "hi";
+                } else if (selectedLang.equals("Gujarati")) {
+                    currentLanguageCode = "gu";
+                } else {
+                    currentLanguageCode = "en";
+                }
+
+                // Save language preference
+                sessionManager.saveLanguage(currentLanguageCode);
+
+                // Translate the form
+                translateForm(currentLanguageCode);
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
 
         tvGoToLogin.setOnClickListener(v -> {
             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
@@ -81,15 +135,17 @@ public class RegisterActivity extends AppCompatActivity {
 
             // Calculate langCode
             String tempLangCode = "en";
-            if(lang.equals("Hindi")) tempLangCode = "hi";
-            if(lang.equals("Gujarati")) tempLangCode = "gu";
+            if (lang.equals("Hindi"))
+                tempLangCode = "hi";
+            if (lang.equals("Gujarati"))
+                tempLangCode = "gu";
 
             // Make it final for lambda use
             final String langCode = tempLangCode;
 
             if (!name.isEmpty() && phone.length() == 10 && !state.isEmpty() && !city.isEmpty()) {
                 // 2. Check token before register
-                if(!fcmToken.isEmpty()) {
+                if (!fcmToken.isEmpty()) {
                     registerUser(name, phone, langCode, state, city);
                 } else {
                     // Retry token
@@ -99,7 +155,24 @@ public class RegisterActivity extends AppCompatActivity {
                     });
                 }
             } else {
-                Toast.makeText(this, "Please fill all details", Toast.LENGTH_SHORT).show();
+                // Translate error message
+                String errorMsg = "Please fill all details";
+                if (!currentLanguageCode.equals("en")) {
+                    TranslationHelper.translateText(errorMsg, currentLanguageCode,
+                            new TranslationHelper.TranslationCallback() {
+                                @Override
+                                public void onTranslationComplete(String translatedText) {
+                                    Toast.makeText(RegisterActivity.this, translatedText, Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onTranslationError(String error) {
+                                    Toast.makeText(RegisterActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -120,24 +193,28 @@ public class RegisterActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     boolean isNewUser = false;
                     try {
-                        if(response.body().has("is_new_user")) {
+                        if (response.body().has("is_new_user")) {
                             isNewUser = response.body().get("is_new_user").getAsBoolean();
                         }
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
 
                     if (response.body().get("success").getAsBoolean()) {
                         if (!isNewUser) {
-                            Toast.makeText(RegisterActivity.this, "Account already exists! Redirecting to Login...", Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegisterActivity.this, "Account already exists! Redirecting to Login...",
+                                    Toast.LENGTH_LONG).show();
                             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                             finish();
                         } else {
                             showOtpBottomSheet(phone);
                         }
                     } else {
-                        Toast.makeText(RegisterActivity.this, "Error: " + response.body().get("message").getAsString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "Error: " + response.body().get("message").getAsString(),
+                                Toast.LENGTH_LONG).show();
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
@@ -162,6 +239,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 tvTimer.setText("Resend code in 00:" + millisUntilFinished / 1000);
             }
+
             public void onFinish() {
                 tvTimer.setText("Didn't receive code?");
                 tvResendBtn.setVisibility(View.VISIBLE);
@@ -178,8 +256,10 @@ public class RegisterActivity extends AppCompatActivity {
             // Recalculate lang
             String rLang = spinnerLanguage.getSelectedItem().toString();
             String rLangCode = "en";
-            if(rLang.equals("Hindi")) rLangCode = "hi";
-            if(rLang.equals("Gujarati")) rLangCode = "gu";
+            if (rLang.equals("Hindi"))
+                rLangCode = "hi";
+            if (rLang.equals("Gujarati"))
+                rLangCode = "gu";
 
             registerUser(rName, phone, rLangCode, rState, rCity);
             tvResendBtn.setVisibility(View.GONE);
@@ -188,7 +268,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         btnVerifyOtp.setOnClickListener(v -> {
             String otp = etOtpInput.getText().toString().trim();
-            if(otp.length() >= 4) {
+            if (otp.length() >= 4) {
                 verifyOtp(phone, otp, bottomSheetDialog, progressOtp);
             } else {
                 Toast.makeText(this, "Enter OTP", Toast.LENGTH_SHORT).show();
@@ -213,7 +293,8 @@ public class RegisterActivity extends AppCompatActivity {
                             if (response.body().has("user_id")) {
                                 userId = response.body().get("user_id").getAsString();
                             }
-                        } catch (Exception e) {}
+                        } catch (Exception e) {
+                        }
 
                         sessionManager.createLoginSession(userId, phone);
 
@@ -226,10 +307,63 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 loader.setVisibility(View.GONE);
             }
         });
+    }
+
+    /**
+     * Translate all form elements to the selected language
+     */
+    private void translateForm(String targetLang) {
+        // If English, set original text
+        if (targetLang.equals("en")) {
+            tvCreateAccount.setText("Create Account");
+            tvLanguageLabel.setText("Preferred Language");
+            tilName.setHint("Full Name");
+            tilPhone.setHint("Phone Number");
+            tilState.setHint("State");
+            tilCity.setHint("City");
+            btnRegister.setText("Join Now");
+            tvGoToLogin.setText("Already have an account? Login");
+            return;
+        }
+
+        // Texts to translate
+        String[] textsToTranslate = {
+                "Create Account",
+                "Preferred Language",
+                "Full Name",
+                "Phone Number",
+                "State",
+                "City",
+                "Join Now",
+                "Already have an account? Login"
+        };
+
+        // Translate all at once
+        TranslationHelper.translateMultiple(textsToTranslate, targetLang,
+                new TranslationHelper.MultiTranslationCallback() {
+                    @Override
+                    public void onTranslationComplete(String[] translatedTexts) {
+                        // Update UI with translated text
+                        tvCreateAccount.setText(translatedTexts[0]);
+                        tvLanguageLabel.setText(translatedTexts[1]);
+                        tilName.setHint(translatedTexts[2]);
+                        tilPhone.setHint(translatedTexts[3]);
+                        tilState.setHint(translatedTexts[4]);
+                        tilCity.setHint(translatedTexts[5]);
+                        btnRegister.setText(translatedTexts[6]);
+                        tvGoToLogin.setText(translatedTexts[7]);
+                    }
+
+                    @Override
+                    public void onTranslationError(String error) {
+                        Toast.makeText(RegisterActivity.this, "Translation error: " + error, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

@@ -12,6 +12,7 @@ public class SessionManager {
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     private static final String KEY_USER_ID = "userId";
     private static final String KEY_PHONE = "phone";
+    private static final String KEY_LANGUAGE = "language"; // Language preference
 
     public SessionManager(Context context) {
         this.context = context;
@@ -37,5 +38,24 @@ public class SessionManager {
     public void logoutUser() {
         editor.clear();
         editor.commit();
+    }
+
+    /**
+     * Save user's preferred language
+     * 
+     * @param languageCode Language code (en, hi, gu)
+     */
+    public void saveLanguage(String languageCode) {
+        editor.putString(KEY_LANGUAGE, languageCode);
+        editor.commit();
+    }
+
+    /**
+     * Get user's preferred language
+     * 
+     * @return Language code (default: "en")
+     */
+    public String getLanguage() {
+        return pref.getString(KEY_LANGUAGE, "en");
     }
 }
