@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="hh_primary">#0677C6</color>
+    <color name="hh_accent_orange">#FE9344</color>
+
 </resources>

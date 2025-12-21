@@ -3,5 +3,14 @@
     <style name="Base.Theme.HighwayHelp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Status bar black -->
+        <item name="android:statusBarColor">@android:color/black</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+
+        <!-- icons white (because background is black) -->
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Optional: keep consistent -->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 </resources>

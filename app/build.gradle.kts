@@ -59,5 +59,7 @@ dependencies {
 
         // ... purani lines ...
         implementation ("com.google.firebase:firebase-messaging:23.4.0")
-    
+    implementation ("com.google.android.material:material:1.12.0")
+
+
 }
