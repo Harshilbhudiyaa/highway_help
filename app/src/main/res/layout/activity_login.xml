@@ -1,44 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#F5F7FA">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F7FA">
 
     <!-- Blue Header -->
-    <View android:layout_width="match_parent" android:layout_height="280dp" android:background="@drawable/bg_top_wave" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:background="@drawable/bg_top_wave" />
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="24dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-        <ImageView android:layout_width="80dp" android:layout_height="80dp" android:layout_marginTop="40dp" android:src="@drawable/ic_launcher_foreground" app:tint="#FFFFFF" android:layout_gravity="center"/>
+        <ImageView
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
+            android:src="@drawable/logo" />
 
-        <TextView android:id="@+id/tvWelcome" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Welcome Back" android:textColor="#FFFFFF" android:textSize="32sp" android:textStyle="bold" android:layout_gravity="center" android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Welcome Back"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
 
-        <TextView android:id="@+id/tvSubtitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Login to continue" android:textColor="#E0E0E0" android:textSize="16sp" android:layout_gravity="center" android:layout_marginBottom="30dp"/>
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="26dp"
+            android:text="Login to continue"
+            android:textColor="#EAF0FF"
+            android:textSize="16sp" />
 
         <!-- Login Card -->
-        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="20dp" app:cardElevation="10dp" android:backgroundTint="#FFFFFF">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="10dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#120B57D0">
 
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
 
-                <TextView android:id="@+id/tvMobileLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mobile Number" android:textColor="#333" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+                <TextView
+                    android:id="@+id/tvMobileLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mobile Number"
+                    android:textColor="#111827"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp" />
 
-                <com.google.android.material.textfield.TextInputLayout android:id="@+id/tilPhone" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="match_parent" android:layout_height="wrap_content" app:boxCornerRadiusBottomEnd="10dp" app:boxCornerRadiusBottomStart="10dp" app:boxCornerRadiusTopEnd="10dp" app:boxCornerRadiusTopStart="10dp" android:hint="98765 43210">
+                <!-- IMPORTANT: Use our FormOutlined style so border always visible -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPhone"
+                    style="@style/Widget.App.FormOutlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mobile Number"
+                    app:placeholderText="98765 43210"
+                    app:placeholderTextColor="#9CA3AF"
+                    app:prefixText="+91 "
+                    app:prefixTextColor="#111827"
 
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etPhone" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="phone" android:maxLength="10"/>
+                    app:startIconTint="#0B57D0"
+                    app:startIconCheckable="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:textColor="#111827"
+                        android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnLogin" android:layout_width="match_parent" android:layout_height="60dp" android:layout_marginTop="24dp" android:text="Secure Login" android:textSize="16sp" android:textStyle="bold" android:backgroundTint="#0056D2" app:cornerRadius="30dp"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLogin"
+                    style="@style/Widget.App.PrimaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginTop="22dp"
+                    android:text="Secure Login"
+                    android:textAllCaps="false"
+                    android:textSize="16sp" />
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Register Link -->
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:layout_marginTop="30dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="26dp">
 
-            <TextView android:id="@+id/tvNewUser" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New User? " android:textColor="#666"/>
+            <TextView
+                android:id="@+id/tvNewUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New User? "
+                android:textColor="#6B7280" />
 
-            <TextView android:id="@+id/tvGoToRegister" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Create Account" android:textColor="#0056D2" android:textStyle="bold" android:padding="8dp"/>
+            <TextView
+                android:id="@+id/tvGoToRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Account"
+                android:textColor="#0B57D0"
+                android:textStyle="bold"
+                android:padding="8dp" />
         </LinearLayout>
 
-        <ProgressBar android:id="@+id/progressBar" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:layout_marginTop="20dp" android:visibility="gone"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 </RelativeLayout>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App Theme (keep MaterialComponents so TextInputLayout borders work reliably) -->
+    <style name="Theme.HighwayHelp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#0B57D0</item>
+        <item name="colorPrimaryVariant">#0A2E7A</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#0B57D0</item>
+
+        <item name="android:statusBarColor">@android:color/black</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <!-- Base style (so @style/Widget.App resolves if used anywhere) -->
+    <style name="Widget.App" parent="" />
+
+    <!-- Outlined form field style (BORDER VISIBLE) -->
+    <style name="Widget.App.FormOutlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundMode">outline</item>
+
+        <!-- Make border visible on light background -->
+        <item name="boxStrokeWidth">1.5dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+
+        <item name="boxBackgroundColor">#FFFFFF</item>
+
+        <!-- Slightly darker so it shows clearly -->
+        <item name="boxStrokeColor">#9CA3AF</item>
+
+        <!-- Hint/label colors -->
+        <item name="hintTextColor">#6B7280</item>
+        <item name="android:textColorHint">#9CA3AF</item>
+    </style>
+
+    <!-- Primary Button -->
+    <style name="Widget.App.PrimaryButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">#0B57D0</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="cornerRadius">30dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:elevation">6dp</item>
+        <item name="rippleColor">#1AFFFFFF</item>
+    </style>
+
+    <!-- Secondary Button -->
+    <style name="Widget.App.SecondaryButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">#0B57D0</item>
+        <item name="strokeColor">#D6E4FF</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">14dp</item>
+        <item name="android:backgroundTint">#EEF4FF</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- OTP Box: border clearly visible -->
+    <style name="Widget.App.OtpBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxStrokeWidth">1.5dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+
+        <item name="boxCornerRadiusTopStart">14dp</item>
+        <item name="boxCornerRadiusTopEnd">14dp</item>
+        <item name="boxCornerRadiusBottomStart">14dp</item>
+        <item name="boxCornerRadiusBottomEnd">14dp</item>
+
+        <item name="boxBackgroundColor">#FFFFFF</item>
+
+        <!-- Darker stroke so it shows -->
+        <item name="boxStrokeColor">#9CA3AF</item>
+
+        <item name="hintEnabled">false</item>
+        <item name="boxCollapsedPaddingTop">0dp</item>
+    </style>
+
+    <!-- OTP EditText: digits not cut -->
+    <style name="Widget.App.OtpEditText" parent="Widget.App">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:singleLine">true</item>
+
+        <item name="android:textColor">#0B57D0</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+
+        <!-- Critical clipping fix -->
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+</resources>

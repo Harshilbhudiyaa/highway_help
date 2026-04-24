@@ -18,9 +18,7 @@
         android:theme="@style/Theme.HighwayHelp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".LanguageActivity"
-            android:exported="false" />
+
         <activity
             android:name=".HistoryActivity"
             android:exported="false" />
